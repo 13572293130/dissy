@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   Intel arch specific stuff
 ##
-## $Id: intel.py 14169 2007-03-11 14:43:02Z ska $
+## $Id: intel.py 21087 2009-01-31 06:36:19Z ska $
 ##
 ######################################################################
 import sys, architecture

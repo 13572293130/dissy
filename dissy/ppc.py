@@ -6,7 +6,7 @@
 ## Author:        Andrew May <acmay [at] acmay [dot] homeip [dot] net>
 ## Description:   PPC arch specific stuff
 ##
-## $Id: ppc.py 20236 2008-10-08 02:55:28Z ska $
+## $Id: ppc.py 21087 2009-01-31 06:36:19Z ska $
 ##
 ######################################################################
 import sys, architecture

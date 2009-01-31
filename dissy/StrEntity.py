@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   String entity
 ##
-## $Id: StrEntity.py 8337 2006-05-26 20:00:53Z ska $
+## $Id: StrEntity.py 21087 2009-01-31 06:36:19Z ska $
 ##
 ######################################################################
 from dissy.Entity import Entity

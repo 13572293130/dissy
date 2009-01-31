@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   A function
 ##
-## $Id: Function.py 17290 2008-01-25 08:20:08Z ska $
+## $Id: Function.py 21087 2009-01-31 06:36:19Z ska $
 ##
 ######################################################################
 import re, os, cgi

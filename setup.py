@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   Installation script
 ##
-## $Id: setup.py 14502 2007-03-28 04:21:14Z ska $
+## $Id: setup.py 21087 2009-01-31 06:36:19Z ska $
 ##
 ######################################################################
 import sys

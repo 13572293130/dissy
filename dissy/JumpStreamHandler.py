@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   Jump streams
 ##
-## $Id: JumpStreamHandler.py 8336 2006-05-26 18:47:58Z ska $
+## $Id: JumpStreamHandler.py 21087 2009-01-31 06:36:19Z ska $
 ##
 ######################################################################
 INVALID=0

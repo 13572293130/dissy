@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   Describes one file
 ##
-## $Id: File.py 20245 2008-10-08 17:32:19Z ska $
+## $Id: File.py 21087 2009-01-31 06:36:19Z ska $
 ##
 ######################################################################
 import cgi, os, sys

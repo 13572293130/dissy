@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   Entity (address, size etc.)
 ##
-## $Id: Entity.py 8505 2006-06-13 09:28:22Z ska $
+## $Id: Entity.py 21087 2009-01-31 06:36:19Z ska $
 ##
 ######################################################################
 class Entity:

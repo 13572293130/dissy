@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   Display the functions
 ##
-## $Id: FunctionModel.py 8500 2006-06-12 14:03:16Z ska $
+## $Id: FunctionModel.py 21087 2009-01-31 06:36:19Z ska $
 ##
 ######################################################################
 import gtk, gobject

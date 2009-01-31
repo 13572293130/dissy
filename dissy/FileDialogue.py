@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   File dialogue
 ##
-## $Id: FileDialogue.py 8375 2006-05-30 08:59:01Z ska $
+## $Id: FileDialogue.py 21087 2009-01-31 06:36:19Z ska $
 ##
 ######################################################################
 import pygtk, dissy

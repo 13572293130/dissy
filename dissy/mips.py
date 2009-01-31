@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   MIPS arch specific stuff
 ##
-## $Id: mips.py 14551 2007-03-29 16:55:13Z ska $
+## $Id: mips.py 21087 2009-01-31 06:36:19Z ska $
 ##
 ######################################################################
 import dissy.architecture, re

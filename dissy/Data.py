@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   Describes data symbols
 ##
-## $Id: Data.py 9711 2006-09-03 12:18:11Z ska $
+## $Id: Data.py 21087 2009-01-31 06:36:19Z ska $
 ##
 ######################################################################
 import re, os, cgi, curses.ascii

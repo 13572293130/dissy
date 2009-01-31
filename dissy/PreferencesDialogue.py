@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   Preferences dialog
 ##
-## $Id: PreferencesDialogue.py 12233 2006-11-18 11:32:45Z ska $
+## $Id: PreferencesDialogue.py 21087 2009-01-31 06:36:19Z ska $
 ##
 ######################################################################
 import pygtk

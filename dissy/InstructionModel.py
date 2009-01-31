@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   Instruction models
 ##
-## $Id: InstructionModel.py 12442 2006-11-25 10:14:05Z ska $
+## $Id: InstructionModel.py 21087 2009-01-31 06:36:19Z ska $
 ##
 ######################################################################
 import gtk, gobject
