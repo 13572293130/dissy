@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   Installation script
 ##
-## $Id: setup.py 14502 2007-03-28 04:21:14Z ska $
+## $Id: setup.py 8338 2006-05-26 20:18:19Z ska $
 ##
 ######################################################################
 import sys
@@ -32,7 +32,6 @@ setup(name='%s' % (Config.PROGRAM_NAME).lower(),
 		    ('share/%s/' % (Config.PROGRAM_NAME.lower()), ['menubar.xml']),
 		    ('share/doc/%s/' % (Config.PROGRAM_NAME.lower()), ['README']),
 		    ('share/doc/%s/' % (Config.PROGRAM_NAME.lower()), ['COPYING']),
-		    ('share/man/man1/', ['dissy.1']),
 		    ],
       )
 
