@@ -6,13 +6,13 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   MIPS arch specific stuff
 ##
-## $Id: mips.py 14551 2007-03-29 16:55:13Z ska $
+## $Id: mips.py 8460 2006-06-03 07:57:52Z ska $
 ##
 ######################################################################
 import dissy.architecture, re
 from dissy.architecture import Architecture
 
-REGISTER_REGEXP = "(?:[tsakv]{1}[0-9]{1})|sp|ra|fp|gp|at"
+REGISTER_REGEXP = "(?:[tsav]{1}[0-9]{1})|sp|ra|fp|gp|at"
 ADDRESS_REGEXP  = "[0-9,a-f,A-F]+"
 
 mips_jumps = ['bgez',

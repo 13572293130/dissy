@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   Base-class for architecture handling
 ##
-## $Id: architecture.py 17292 2008-01-25 08:30:30Z ska $
+## $Id: architecture.py 8458 2006-06-03 07:57:26Z ska $
 ##
 ######################################################################
 class Architecture:
@@ -41,23 +41,11 @@ class Architecture:
 	    pass
 	return None
 
-from dissy import mips, intel, ppc, arm
+from dissy import mips, intel
 
 def getArchitecture(archStr):
     if archStr == "intel":
 	return intel.IntelArchitecture()
-    elif archStr == "x86-64":
-	return intel.IntelArchitecture()
-    elif archStr == "i8086":
-	return intel.IntelArchitecture()
     if archStr == "mips":
 	return mips.MipsArchitecture()
-    if archStr == "ppc":
-	return ppc.PpcArchitecture()
-    if archStr == "powerpc":
-	return ppc.PpcArchitecture()
-    if archStr == "arm":
-	return arm.ArmArchitecture()
-    if archStr == "arm26":
-	return arm.ArmArchitecture()
     return Architecture([])

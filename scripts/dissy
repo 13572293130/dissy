@@ -7,34 +7,28 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   The main program
 ##
-## $Id: dissy 21086 2009-01-31 06:35:23Z ska $
+## $Id: dissy 9713 2006-09-03 12:22:26Z ska $
 ##
 ######################################################################
-import pygtk, pango, getopt, sys, os, cgi, re
+import pygtk, pango, getopt, sys, os, cgi
 
 sys.path.append(".")
-sys.path = ['/home/ska/projects/dissy/trunk/'] + sys.path
 
 pygtk.require('2.0')
 import gtk, gobject
 
 from dissy.Config import *
 from dissy.File import File
-from dissy.File import linuxKernelCrashRegexp
 from dissy.Entity import Entity
 from dissy.StrEntity import StrEntity
 from dissy.Instruction import Instruction
 from dissy.Function import Function
 from dissy.PreferencesDialogue import PreferencesDialogue
 from dissy.FileDialogue import FileDialogue
-from dissy.history import History
 from dissy import FunctionModel
 from dissy import InstructionModel
 
 NUM_JUMP_COLUMNS=3
-
-# Navigation history
-history = History()
 
 def loadFile(fileName):
     pathsToSearch = ['.', '/usr/local/share/%s' % (PROGRAM_NAME).lower(),
@@ -62,12 +56,10 @@ class GUI_Controller:
 	else:
 	    self.fileContainer = File(inFile, baseAddress=baseAddress)
 
-	self.markPattern = None
-
 	functionModel = FunctionModel.InfoModel(self.fileContainer).getModel()
 	insnModel = InstructionModel.InfoModel(None).getModel()
 
-	self.display = DisplayModel(self.markPattern)
+	self.display = DisplayModel()
 
 	# setup the main window
 	self.root = gtk.Window(type=gtk.WINDOW_TOPLEVEL)
@@ -96,11 +88,6 @@ class GUI_Controller:
 				       'Reload a file', lambda w: self.loadFile() ),
 				      ('File', None, '_File'),
 				      ('Options', None, '_Options'),
-				      ('Navigation', None, '_Navigation'),
-				      ('Forward', gtk.STOCK_GO_FORWARD, '_Forward', '<Alt>Right',
-				       'Navigate forwards in history', lambda w: self.forward()),
-				      ('Back', gtk.STOCK_GO_BACK, '_Back', '<Alt>Left',
-				       'Navigate backwards in history', lambda w: self.back()),
 				      ('Preferences', gtk.STOCK_PREFERENCES, '_Preferences', None,
 				       'Configure preferences for %s' % (PROGRAM_NAME), lambda w: PreferencesDialogue()),
 				      ('Toggle source', None, '_Toggle source', None,
@@ -117,28 +104,13 @@ class GUI_Controller:
 	# Pastebin for quick lookup of symbols
 	pasteBin = gtk.combo_box_entry_new_text()
 
-	# Pattern matcher
-	patternMatchBin = gtk.Entry()
-
 	# Move to the pasteBin with Ctrl-l
 	pasteBin.child.add_accelerator("grab-focus", self.accelgroup,
 				       ord('L'), gtk.gdk.CONTROL_MASK, gtk.ACCEL_VISIBLE)
-	# Move to the pattern match bin with Ctrl-k
-	patternMatchBin.add_accelerator("grab-focus", self.accelgroup,
-					ord('K'), gtk.gdk.CONTROL_MASK, gtk.ACCEL_VISIBLE)
 
 	pasteBin.child.connect("activate", self.pasteBinCallback, pasteBin)
-
-	patternMatchBin.connect("activate", self.patternMatchBinCallback, patternMatchBin)
-
-	tooltips = gtk.Tooltips()
-	tooltips.set_tip(pasteBin.child, "Lookup an address or symbol (shortcut Ctrl-l)")
-	tooltips.set_tip(patternMatchBin, "Enter a pattern to highlight (shortcut Ctrl-k)")
-
 	hbox.pack_start(gtk.Label("Lookup"), expand=False, padding=2)
 	hbox.pack_start(pasteBin)
-	hbox.pack_start(gtk.Label("Highlight"), expand=False, padding=2)
-	hbox.pack_start(patternMatchBin, expand=False, padding=2)
 
 	vbox.pack_start(self.uimgr.get_widget("/MenuBar"), expand=False)
 	vbox.pack_start(hbox, expand=False, padding=2)
@@ -187,39 +159,37 @@ class GUI_Controller:
 	about = gtk.AboutDialog()
 	about.set_name(PROGRAM_NAME)
 	about.set_version("v%s" % (PROGRAM_VERSION) )
-	about.set_copyright("(C) Simon Kagstrom, 2006-2009")
+	about.set_copyright("(C) Simon Kagstrom, 2006")
 	about.set_website(PROGRAM_URL)
 	about.show()
 
-    def redisplayFunction(self):
-	try:
-	    fnCursor = self.functionView.get_cursor()[0]
-	    curFunction = self.functionView.get_model()[fnCursor][3]
-	except TypeError:
-	    # There is no function currently being shown
-	    return
-	insnCursor = self.instructionView.get_cursor()[0]
-	self.instructionView.set_model( InstructionModel.InfoModel(curFunction, self.markPattern).getModel() )
-	try:
-	    self.instructionView.set_cursor(insnCursor)
-	    self.instructionView.scroll_to_cell(insnCursor)
-	except: # If nothing is selected this will fail
-	    pass
-
     def toggleHighLevelCode(self, widget):
 	config.showHighLevelCode = not config.showHighLevelCode
-	self.redisplayFunction()
+	try:
+	    curFunction = self.functionView.get_model()[self.functionView.get_cursor()[0]][3]
+	except TypeError:
+	    # There is no function
+	    return
+	self.instructionView.set_model( InstructionModel.InfoModel( curFunction ).getModel() )
 
-    def patternMatchBinCallback(self, entry, comboBox):
-	markPattern = entry.get_text()
-	self.markPattern = re.compile(markPattern)
+    def pasteBinCallback(self, entry, comboBox):
+	"""
+	Called to lookup a symbol / address. Looks up a label or an
+	address.
+	"""
+	comboBox.prepend_text(entry.get_text())
 
-	self.display.markPattern = self.markPattern
-	self.redisplayFunction()
-
-    def lookupFunction(self, val):
+	try:
+	    # Try to convert to a number (handle some common cases)
+	    text = entry.get_text().strip()
+	    if not text.startswith("0x"):
+		text = "0x%s" % (text)
+	    if text.endswith(":"):
+		text = text[:-1]
+	    val = long(text, 16)
+	except:
+	    val = entry.get_text()
 	function = self.fileContainer.lookup(val)
-        history.disable()
 
 	if function != None:
 	    model = self.functionView.get_model()
@@ -228,66 +198,13 @@ class GUI_Controller:
 
 	    # Return if this was just a label lookup
 	    if isinstance(val, str):
-                history.enable()
-		return True
+		return
 	    insn = function.lookup(val)
 
 	    if insn != None:
 		model = self.display.insnView.get_model()
 		self.display.insnView.set_cursor_on_cell(model.get_path(insn.iter))
 		self.display.insnView.row_activated(model.get_path(insn.iter), self.display.insnColumns[0])
-            history.enable()
-            return True
-
-        history.enable()
-        return False
-
-    def pasteBinCallback(self, entry, comboBox):
-	"""
-	Called to lookup a symbol / address. Looks up a label or an
-	address.
-	"""
-        txt = entry.get_text()
-	comboBox.prepend_text(txt)
-
-        # Split the input in words and navigate to them
-        for word in txt.split():
-
-            # Special-case Linux crashes
-	    r = linuxKernelCrashRegexp.match(word)
-	    if r != None:
-                fn_name = r.group(1)
-                fn_addend = r.group(2)
-                function = self.fileContainer.lookup(fn_name)
-
-                if function != None:
-                    val=function.getAddress() + long(fn_addend, 16)
-                    if self.lookupFunction( val ):
-                        history.add(val)
-                continue
-
-            try:
-                # Try to convert to a number (handle some common cases)
-                word = word.strip("+():")
-                val = long(word, 16)
-            except:
-                val = word
-            if self.lookupFunction(val):
-                history.add(val)
-
-    def forward(self, filename=None):
-        try:
-            val = history.forward()
-        except:
-            return
-        return self.lookupFunction(val)
-
-    def back(self, filename=None):
-        try:
-            val = history.back()
-        except:
-            return
-        return self.lookupFunction(val)
 
     def destroy_cb(self, *kw):
 	""" Destroy callback to shutdown the app """
@@ -302,9 +219,6 @@ class GUI_Controller:
 
 class DisplayModel:
     """ Displays the Info_Model model in a view """
-
-    def __init__(self, markPattern):
-	self.markPattern = markPattern
 
     def makeFunctionView( self, model ):
 	""" Form a view for the Tree Model """
@@ -337,14 +251,10 @@ class DisplayModel:
 	key = key.lower()
 	comp1 = ("0x%08x" % entity.getAddress()).lower()
 	comp2 = entity.getLabel().lower()
-	if isinstance(entity, Instruction):
-	    comp3 = entity.getOpcode() + entity.getArgs()
-	else:
-	    comp3 = ""
 
 	# Lookup either the address or the label when doing an interactive
 	# search
-	if comp1.find(key) != -1 or comp2.find(key) != -1 or comp3.find(key) != -1:
+	if comp1.find(key) != -1 or comp2.find(key) != -1:
 	    return False
 	return True
 
@@ -371,8 +281,7 @@ class DisplayModel:
 	model = self.functionView.get_model()
 	entity = model[iter][3]
 	entity.link()
-        history.add(entity.address)
-	model = InstructionModel.InfoModel(entity, self.markPattern).getModel()
+	model = InstructionModel.InfoModel(entity).getModel()
 	self.insnView.set_model( model )
 	self.insnView.connect( 'row-activated', self.insnRowActivated, model )
 
@@ -422,11 +331,7 @@ class DisplayModel:
 
     def insnMoveCursor(self, view, step, count, user):
 	model = view.get_model()
-	try:
-	    cur = model[view.get_cursor()[0]][9]
-	except:
-	    # There is no model, just ignore
-	    return
+ 	cur = model[view.get_cursor()[0]][9]
 	function = cur.getFunction()
 
 	if step == gtk.MOVEMENT_DISPLAY_LINES:
@@ -458,7 +363,6 @@ class DisplayModel:
 	if isinstance(entity, Instruction) and entity.hasLink():
 	    link = entity.getOutLink()
 	    if isinstance(link, Function):
-                history.add(link.getAddress())
 		dst = link
 		self.functionView.set_cursor_on_cell(functionModel.get_path(dst.iter))
 		self.functionView.row_activated(functionModel.get_path(dst.iter), self.viewColumns[0])
@@ -467,7 +371,6 @@ class DisplayModel:
 		func = entity.getFunction()
 		dst = func.lookup(link.getAddress())
 		if dst != None:
-                    history.add(dst.getAddress())
 		    view.set_cursor(model.get_path(dst.iter))
 
 
@@ -481,8 +384,8 @@ class DisplayModel:
 def usage():
     print "Usage: %s -h [FILE]" % (PROGRAM_NAME.lower())
     print "Disassemble FILE and open in a graphical window.\n"
-    print "  -t BASE_ADDRESS       Set the start address for the disassembled file (.text segment)"
-    print "  -h                    Display this help and exit"
+    print "  --text-address=ADDRESS    Set the start address for the file (code)"
+    print "  -h                        Display this help and exit"
     sys.exit(1)
 
 baseAddress = 0

@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   Intel arch specific stuff
 ##
-## $Id: intel.py 14169 2007-03-11 14:43:02Z ska $
+## $Id: intel.py 8459 2006-06-03 07:57:42Z ska $
 ##
 ######################################################################
 import sys, architecture
@@ -22,7 +22,6 @@ intel_jumps = ['jbe',
 	       'jne',
 	       'jnz',
 	       'jns',
-	       'js',
 	       'jmp',
 	       'ja',
 	       'jl',

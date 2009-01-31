@@ -12,7 +12,7 @@
 import cPickle, os, os.path
 
 PROGRAM_NAME="Dissy"
-PROGRAM_VERSION="9"
+PROGRAM_VERSION="2"
 PROGRAM_URL="http://www.ipd.bth.se/ska/sim_home/dissy.html"
 
 class Config:
@@ -21,7 +21,6 @@ class Config:
 
 	self.defaults = {}
 
-	self.defaults["markupFgColor"] = "red"
 	self.defaults["insnFgColor"] = "blue"
 	self.defaults["highLevelCodeFgColor"] = "grey50"
 	self.defaults["showHighLevelCode"] = True
@@ -33,7 +32,6 @@ class Config:
 	self.restoreAllDefaults()
 
     def restoreAllDefaults(self):
-	self.markupFgColor = self.getDefault("markupFgColor")
 	self.insnFgColor = self.getDefault("insnFgColor")
 	self.highLevelCodeFgColor = self.getDefault("highLevelCodeFgColor")
 	self.showHighLevelCode = self.getDefault("showHighLevelCode")
@@ -42,19 +40,12 @@ class Config:
 	self.nm = self.getDefault("nm")
 
     def copy(self, other):
-	self.markupFgColor = other.markupFgColor
 	self.insnFgColor = other.insnFgColor
 	self.highLevelCodeFgColor = other.highLevelCodeFgColor
 	self.showHighLevelCode = other.showHighLevelCode
 	self.objdump = other.objdump
 	self.readelf = other.readelf
 	self.nm = other.nm
-
-    def getFromEnvironment(self):
-	od = os.getenv("OBJDUMP")
-
-	if od != None:
-	    self.objdump = od
 
     def getDefault(self, which):
 	return self.defaults[which]
@@ -67,7 +58,6 @@ class Config:
 	    self.copy(other)
 	except IOError:
 	    pass
-
     def save(self):
 	try:
 	    os.makedirs(os.path.dirname(self.configfile), 0700)
@@ -78,8 +68,8 @@ class Config:
 	cPickle.dump(self, f)
 	f.close()
 
+
 config = Config()
 
 # Load the old configuration
 config.load()
-config.getFromEnvironment()
