@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   A function
 ##
-## $Id: Function.py 17290 2008-01-25 08:20:08Z ska $
+## $Id: Function.py 13353 2007-02-02 08:11:34Z ska $
 ##
 ######################################################################
 import re, os, cgi
@@ -19,7 +19,7 @@ from dissy.StrEntity import StrEntity
 
 ADDRESS_REGEXP  = "[0-9,a-f,A-F]+"
 ENCODING_REGEXP = ADDRESS_REGEXP + "[ ]"
-INSN_REGEXP     = "[0-9,a-z,A-Z,_,\-,\.,\+]+"
+INSN_REGEXP     = "[0-9,a-z,A-Z,_,\-,\.]+"
 INSN_ARGS_REGEXP= "\**[a-z,A-Z,0-9,_,\,,\(,\),\%,\$,\[,\],!,#,\-, ,&,{,},\*,\+]+"
 
 insnRegExp = re.compile("[ ]*(" + ADDRESS_REGEXP + "):[ \t]+((?:" + ENCODING_REGEXP +")*)[ \t]+(" + INSN_REGEXP + ")+[ \t]*(" + INSN_ARGS_REGEXP + ")*")
@@ -52,16 +52,12 @@ class Function(AddressableEntity):
 	    last = insn
 	return None
 
-    def parse(self, try64bitWorkaround=False):
-	"""Parse the function."""
-	count = 0
+    def parse(self):
+	"""Parse the function. Optimization: provide a specific function that
+	"prepares" the function, i.e., forks objdump. This should
+	increase processing speed."""
 	start, end = self.getExtents()
-	if try64bitWorkaround:
-	    if start & (1<<31):
-		start = long(start) | 0xffffffff00000000
-	    if end & (1<<31):
-		end = long(end) | 0xffffffff00000000
-	s = "%s --wide --demangle --source --start-address=0x%Lx --stop-address=0x%Lx %s" % (config.objdump, start, end, self.file.filename)
+	s = "%s --wide --demangle --source --start-address=0x%x --stop-address=0x%x %s" % (config.objdump, start, end, self.file.filename)
 	self.stream = os.popen(s)
 	if self.stream == None:
 	    self.prepareParseFunction()
@@ -80,15 +76,9 @@ class Function(AddressableEntity):
 	    if r != None:
 		insn = Instruction(self, long("0x" + r.group(1),16), r.group(2), r.group(3), r.group(4))
 		self.addInstruction(insn)
-		count = count + 1
 	    else:
 		self.addOther(cgi.escape(line))
 	self.stream.close()
-
-	if count == 0 and try64bitWorkaround == False:
-	    # If we couldn't add anything interesting, try the 64-bit
-	    # workaround (for e.g., MIPS). See http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=369343
-	    return self.parse(try64bitWorkaround = True)
 
     def link(self):
 	"""

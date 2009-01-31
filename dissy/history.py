@@ -20,12 +20,9 @@ class History:
         # Don't add twice
         if not self.enabled or self.history != [] and self.history[self.index-1] == entry:
             return None
-	if self.index == 1 and len(self.history) > 1:
-	    self.history = []
-	    self.index = 0
-
-	self.history = self.history[ : self.index] + [entry]
-	self.index = self.index + 1
+        self.history = self.history[ : self.index]
+        self.history.append(entry)
+        self.index = self.index + 1
         return entry
 
     def enable(self):
@@ -36,7 +33,7 @@ class History:
 
     def back(self):
         "Go back one step"
-	if self.index-1 <= 0:
+        if self.index-1 <= 0:
             raise Exception("End of history")
         self.index = self.index - 1
         return self.history[self.index-1]
@@ -89,9 +86,3 @@ if __name__ == "__main__":
     except:
         print "Got expected exception (fwd)"
     print "All entries", h.getAllEntries()
-    h.back()
-    h.back()
-    h.add(5)
-    print h.getAllEntries()
-    h.add(6)
-    print h.getAllEntries()
