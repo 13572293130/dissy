@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   Describes one file
 ##
-## $Id: File.py 20245 2008-10-08 17:32:19Z ska $
+## $Id: File.py 16024 2007-09-01 04:22:42Z ska $
 ##
 ######################################################################
 import cgi, os, sys
@@ -20,12 +20,9 @@ from dissy.Data import *
 from dissy.Entity import AddressableEntity
 
 ADDRESS_REGEXP  = "[0-9,a-f,A-F]+"
-FUNCTION_REGEXP = "(?:[.]*)[_,0-9,a-z,A-Z,\:,\*,\,\(,\), ,<,>,~,\.]+"
+FUNCTION_REGEXP = "(?:[.]*)[_,0-9,a-z,A-Z,\:,\*,\,\(,\), ,<,>,~]+"
 
 symbolRegexp = re.compile("(" + ADDRESS_REGEXP + ")* *(" + ADDRESS_REGEXP + ")* ([A,B,C,D,G,I,N,R,S,T,U,V,W,a,b,c,d,g,i,n,r,s,t,u,v,w,-,?]{1}) ("+ FUNCTION_REGEXP + "){1}")
-
-# Followed by size, but let's just skip it
-linuxKernelCrashRegexp = re.compile("(" + FUNCTION_REGEXP + "){1}" + "\+[0x]*(" + ADDRESS_REGEXP + "){1}")
 
 TYPE_UNDEFINED = 0
 TYPE_TEXT = 1

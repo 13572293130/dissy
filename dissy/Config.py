@@ -12,7 +12,7 @@
 import cPickle, os, os.path
 
 PROGRAM_NAME="Dissy"
-PROGRAM_VERSION="9"
+PROGRAM_VERSION="7"
 PROGRAM_URL="http://www.ipd.bth.se/ska/sim_home/dissy.html"
 
 class Config:

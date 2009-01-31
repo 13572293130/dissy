@@ -6,7 +6,7 @@
 ## Author:        Andrew May <acmay [at] acmay [dot] homeip [dot] net>
 ## Description:   PPC arch specific stuff
 ##
-## $Id: ppc.py 20236 2008-10-08 02:55:28Z ska $
+## $Id: ppc.py 16325 2007-10-11 09:30:50Z ska $
 ##
 ######################################################################
 import sys, architecture
@@ -23,12 +23,10 @@ ppc_jumps = [
 	      'bge-',
 	      'blt-',
 	      'ble-',
-              'bdnz-',
 	      'beq+',
 	      'bne+',
 	      'bge+',
 	      'blt+',
-              'bdnz+',
 	      'ble+',
 	      'b-',
 	      ]
