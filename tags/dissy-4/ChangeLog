@@ -1,0 +1,26 @@
+2006-11-25 Simon Kågström <ska@bth.se> (4)
+	* Added PPC support (Andrew May)
+
+	* Added a text entry for marking certain patterns, e.g., to
+	highlight certain registers and so in the text. The pattern is a
+	regular expression
+
+	* Fixed checks to avoid a few non-fatal exceptions
+
+	* Added tooltips
+
+	* Setting of colors is now possible in the preferences dialogue
+
+2006-10-14 Simon Kågström <ska@bth.se> (3)
+	* Added ability to search for instructions and registers
+	* Fixed bug in label lookup
+
+2006-09-03 Simon Kågström <ska@bth.se> (2)
+	* Much faster loading of files. Only load a list of symbols and
+	then load and links each function on demand.
+
+	* More clever use of objdump, nm and readelf
+
+	* Added reload menu option
+
+	* Better IA-32 architecture support

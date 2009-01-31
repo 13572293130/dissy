@@ -1,0 +1,13 @@
+2006-10-14 Simon Kågström <ska@bth.se> (3)
+	* Added ability to search for instructions and registers
+	* Fixed bug in label lookup
+
+2006-09-03 Simon Kågström <ska@bth.se> (2)
+	* Much faster loading of files. Only load a list of symbols and
+	then load and links each function on demand.
+
+	* More clever use of objdump, nm and readelf
+
+	* Added reload menu option
+
+	* Better IA-32 architecture support

@@ -1,0 +1,10 @@
+2006-xx-yy Simon Kagstrom <simon.kagstrom@bth.se> (2):
+	* Much faster loading of large files. So far this does not work
+	with MIPS (something with the --start-address option to objdump).
+
+	* Possibility to specify start address of the text segment
+
+	* Parsing out functions from files without symbols
+
+2006-05-27 Simon Kagstrom <simon.kagstrom@bth.se> (1):
+	* Initial release
