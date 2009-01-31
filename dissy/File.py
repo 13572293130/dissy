@@ -6,7 +6,7 @@
 ## Author:        Simon Kagstrom <ska@bth.se>
 ## Description:   Describes one file
 ##
-## $Id: File.py 20245 2008-10-08 17:32:19Z ska $
+## $Id: File.py 13352 2007-02-02 08:11:21Z ska $
 ##
 ######################################################################
 import cgi, os, sys
@@ -20,12 +20,9 @@ from dissy.Data import *
 from dissy.Entity import AddressableEntity
 
 ADDRESS_REGEXP  = "[0-9,a-f,A-F]+"
-FUNCTION_REGEXP = "(?:[.]*)[_,0-9,a-z,A-Z,\:,\*,\,\(,\), ,<,>,~,\.]+"
+FUNCTION_REGEXP = "(?:[.]*)[_,0-9,a-z,A-Z,\:,\*,\,\(,\), ,<,>]+"
 
 symbolRegexp = re.compile("(" + ADDRESS_REGEXP + ")* *(" + ADDRESS_REGEXP + ")* ([A,B,C,D,G,I,N,R,S,T,U,V,W,a,b,c,d,g,i,n,r,s,t,u,v,w,-,?]{1}) ("+ FUNCTION_REGEXP + "){1}")
-
-# Followed by size, but let's just skip it
-linuxKernelCrashRegexp = re.compile("(" + FUNCTION_REGEXP + "){1}" + "\+[0x]*(" + ADDRESS_REGEXP + "){1}")
 
 TYPE_UNDEFINED = 0
 TYPE_TEXT = 1
@@ -156,11 +153,11 @@ class File(AddressableEntity):
 	    if objType == TYPE_TEXT:
 		sym = typeToClass[objType](self, address, label, size)
 		self.functions.append(sym)
-		self.symbols.append(sym)
-#	    else:
-#		sym = typeToClass[objType](self, address, label, size)
-#		self.data.append(sym)
+	    else:
+		sym = typeToClass[objType](self, address, label, size)
+		self.data.append(sym)
 
+	    self.symbols.append(sym)
 
     def parseNoSymbols(self):
 	"Parse the functions from this file (without symbols)"

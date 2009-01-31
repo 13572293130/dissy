@@ -12,7 +12,7 @@
 import cPickle, os, os.path
 
 PROGRAM_NAME="Dissy"
-PROGRAM_VERSION="9"
+PROGRAM_VERSION="4"
 PROGRAM_URL="http://www.ipd.bth.se/ska/sim_home/dissy.html"
 
 class Config:
@@ -50,12 +50,6 @@ class Config:
 	self.readelf = other.readelf
 	self.nm = other.nm
 
-    def getFromEnvironment(self):
-	od = os.getenv("OBJDUMP")
-
-	if od != None:
-	    self.objdump = od
-
     def getDefault(self, which):
 	return self.defaults[which]
 
@@ -67,7 +61,6 @@ class Config:
 	    self.copy(other)
 	except IOError:
 	    pass
-
     def save(self):
 	try:
 	    os.makedirs(os.path.dirname(self.configfile), 0700)
@@ -78,8 +71,8 @@ class Config:
 	cPickle.dump(self, f)
 	f.close()
 
+
 config = Config()
 
 # Load the old configuration
 config.load()
-config.getFromEnvironment()
