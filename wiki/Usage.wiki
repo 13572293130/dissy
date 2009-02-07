@@ -13,4 +13,4 @@ Open an ELF file from Dissy. It currently needs to be non-stripped.
   * History navigation like in web browsers (returning to the last function, *Alt-Left* and *Alt-Right*)
 
 = Bugs =
-Report bugs to [mailto:simon.kagstrom@gmail.com simon.kagstrom@gmail.com]
+Report bugs in the issue tracker. Questions and comments can also be sent to [mailto:simon.kagstrom@gmail.com simon.kagstrom@gmail.com]
