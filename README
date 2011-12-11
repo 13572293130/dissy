@@ -1,20 +1,3 @@
-Dissy is a graphical frontend to objdump with navigation
-possibilities. See the webpage,
+Source can now be found at
 
-  http://dissy.googlecode.com
-
-for more information.
-
-
-Running without installing
---------------------------
-run
-
-$ scripts/dissy
-
-
-Installing
-----------
-run
-
-$ sudo python setup.py install
+https://github.com/SimonKagstrom/dissy
